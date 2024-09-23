@@ -1,11 +1,9 @@
-// index.js
 require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
 const authRoutes = require('./routes/auth');
-const propertyRoutes = require('./routes/properties'); // Import property routes
+const addressRoutes = require('./routes/addresses');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,7 +11,6 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 app.use(cors());
-// app.use(express.static(path.join(__dirname, 'dist')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -25,15 +22,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // API Routes
 app.use('/api', authRoutes);
-app.use('/api', propertyRoutes); // Use property routes
-
-// Serve static files from React
-// app.use(express.static(path.join(__dirname, 'build')));
-
-// Handle all other routes by serving the React app
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-// });
+app.use('/api/addresses', addressRoutes);
 
 // Start server
 app.listen(PORT, () => {
