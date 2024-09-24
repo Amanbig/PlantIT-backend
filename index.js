@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const addressRoutes = require('./routes/addresses');
+const contactRoutes = require('./routes/contacts');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // API Routes
 app.use('/api', authRoutes);
 app.use('/api/addresses', addressRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Start server
 app.listen(PORT, () => {
