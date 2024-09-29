@@ -2,6 +2,7 @@ require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 const authRoutes = require('./routes/auth');
 const addressRoutes = require('./routes/addresses');
 const contactRoutes = require('./routes/contacts');
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -25,6 +27,10 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use('/api', authRoutes);
 app.use('/api/addresses', addressRoutes);
 app.use('/api/contact', contactRoutes);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // Start server
 app.listen(PORT, () => {
